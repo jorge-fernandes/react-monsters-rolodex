@@ -10,10 +10,17 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-    .then(response => response.json())
-    .then(users => this.setState({ monsters: users }));
+  async componentDidMount() {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/users');
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const jsonResponse = await response.json();
+      this.setState({ monsters: jsonResponse });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render () {
